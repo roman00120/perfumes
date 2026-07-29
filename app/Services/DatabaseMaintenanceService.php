@@ -1,0 +1,1 @@
+<?php declare(strict_types=1); final class DatabaseMaintenanceService{public function optimize(PDO$db):void{foreach(['brands','categories','olfactory_families','notes','tags','perfumes','promotions','banners']as$table)$db->exec('OPTIMIZE TABLE '.$table);}}

@@ -1,0 +1,1 @@
+<?php declare(strict_types=1); final class JsonExportService{public function write(string$path,array$data):int{$json=json_encode($data,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT|JSON_THROW_ON_ERROR);file_put_contents($path,$json);return count($data);}}

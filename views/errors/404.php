@@ -1,0 +1,2 @@
+<?php http_response_code(404); $title='Página no encontrada'; ob_start(); ?><section class="page-head"><div class="container"><p class="eyebrow">404</p><h1>Perdimos el aroma.</h1><p class="lead">La página que buscas no existe o cambió de lugar.</p><a class="button" href="<?= url() ?>">Volver al inicio</a></div></section><?php $content=ob_get_clean(); require __DIR__.'/../website/layouts/main.php'; ?>
+

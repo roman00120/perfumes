@@ -1,0 +1,4 @@
+<?php
+declare(strict_types=1);
+require dirname(__DIR__).'/bootstrap.php';
+$version=(string)($argv[1]??Env::get('APP_VERSION','1.0.0'));$checks=LaunchReadinessService::evaluate(null);$required=['.env.production.example','docs/CPANEL_DEPLOYMENT.md','tools/build_production_package.php','tools/verify_release.php'];$missing=[];foreach($required as $file)if(!is_file(dirname(__DIR__).'/'.$file))$missing[]=$file;$report=['status'=>($missing||in_array(false,$checks['checks'],true))?'bloqueado':'listo_para_preparar','version'=>$version,'missing'=>$missing,'readiness'=>$checks,'timestamp'=>gmdate('c')];$path=AppConfig::$data['storage'].'/reports/qa';if(!is_dir($path))mkdir($path,0750,true);file_put_contents($path.'/deploy-prepare.json',json_encode($report,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));echo json_encode($report,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE).PHP_EOL;exit($report['status']==='bloqueado'?1:0);

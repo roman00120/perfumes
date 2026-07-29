@@ -1,0 +1,6 @@
+<?php
+declare(strict_types=1);
+final class CatalogController {
+    public function __construct(private PDO $db) {}
+    public function index(?int $page=null): string { require_once dirname(__DIR__).'/Helpers/QueryStringHelper.php';$filters=catalog_filters($_GET);$page=max(1,$page??(int)($_GET['page']??1));$per=min(max(1,Env::int('CATALOG_PER_PAGE',12)),max(1,Env::int('CATALOG_MAX_PER_PAGE',48)));try{$repo=new PerfumeRepository($this->db);$result=$repo->paginate($filters,$page,$per);$options=$repo->filterOptions();}catch(Throwable $e){error_log('Catalog query error: '.$e->getMessage());$result=['items'=>[],'total'=>0,'page'=>$page,'per_page'=>$per,'pages'=>0];$options=['brands'=>[],'categories'=>[],'families'=>[],'tags'=>[],'genders'=>[],'concentrations'=>[],'availabilities'=>[],'seasons'=>[],'occasions'=>[],'intensities'=>[]];$result['database_error']=true;}return view('website/catalog/index',['result'=>$result,'filters'=>$filters,'options'=>$options,'title'=>'Catálogo de fragancias','pageTitle'=>'Catálogo de fragancias | Les Sens Perfumería','pageDescription'=>'Explora fragancias publicadas por estilo, marca, categoría y familia olfativa. Consulta disponibilidad directamente con Les Sens.']); }
+}

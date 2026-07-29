@@ -1,0 +1,3 @@
+<?php
+declare(strict_types=1);
+$base=rtrim($argv[1]??'', '/');if($base===''){fwrite(STDERR,"Uso: php tools/smoke_test.php https://dominio\n");exit(1);}$paths=['/','/robots.txt','/sitemap.xml','/health'];$results=[];$ok=true;foreach($paths as $path){$ch=curl_init($base.$path);curl_setopt_array($ch,[CURLOPT_RETURNTRANSFER=>true,CURLOPT_FOLLOWLOCATION=>false,CURLOPT_TIMEOUT=>10,CURLOPT_HEADER=>true]);$raw=curl_exec($ch);$code=(int)curl_getinfo($ch,CURLINFO_HTTP_CODE);curl_close($ch);$pass=$raw!==false&&$code>=200&&$code<500;$results[$path]=['status'=>$code,'pass'=>$pass];$ok=$ok&&$pass;}echo json_encode(['base'=>$base,'status'=>$ok?'passed':'failed','results'=>$results],JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES).PHP_EOL;exit($ok?0:1);

@@ -1,0 +1,1 @@
+<?php ob_start();?><section class="panel"><h2>Exportación generada</h2><p><?=e($item['filename'])?></p><a class="admin-button primary" href="<?=url('admin/exportaciones/'.$item['id'].'/descargar')?>">Descargar archivo</a></section><?php $content=ob_get_clean();$section='exportaciones';require dirname(__DIR__).'/layouts/main.php';?>

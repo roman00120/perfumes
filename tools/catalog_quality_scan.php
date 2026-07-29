@@ -1,0 +1,1 @@
+<?php declare(strict_types=1);require dirname(__DIR__).'/bootstrap.php';$issues=(new CatalogQualityService(Database::connection()))->scan();foreach($issues as$key=>$count)echo$key.': '.$count.PHP_EOL;

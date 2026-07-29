@@ -1,0 +1,1 @@
+<a class="whatsapp-float" data-analytics-event="whatsapp_click" href="<?= whatsapp_href() ?>" target="_blank" rel="noopener noreferrer" aria-label="Escribir a Les Sens por WhatsApp"><span aria-hidden="true">◌</span><b>WhatsApp</b></a>

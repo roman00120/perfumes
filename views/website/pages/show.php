@@ -1,0 +1,1 @@
+<?php ob_start();?><section class="page-hero"><div class="site-container"><p class="eyebrow">LES SENS</p><h1><?=e($item['title'])?></h1><p><?=e($item['excerpt']??'')?></p></div></section><section class="page-section"><div class="site-container content-rich"><?= $item['content']??'' ?></div></section><?php $content=ob_get_clean();require dirname(__DIR__).'/../layouts/main.php';?>

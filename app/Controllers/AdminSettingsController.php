@@ -1,0 +1,1 @@
+<?php declare(strict_types=1); final class AdminSettingsController{public function __construct(private PDO$db){}public function index():string{return view('admin/pages/placeholder',['title'=>'Configuración','section'=>'configuracion']);}}

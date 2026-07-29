@@ -1,0 +1,9 @@
+Options -Indexes
+RewriteEngine On
+
+<FilesMatch "^\.env|^(bootstrap|composer)\.php$">
+    Require all denied
+</FilesMatch>
+RewriteRule ^(?:app|config|database|routes|storage|views)(?:/|$) - [F,L]
+RewriteRule ^public(?:/|$) - [L]
+RewriteRule ^(.*)$ public/$1 [L]

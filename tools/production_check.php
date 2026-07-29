@@ -1,0 +1,6 @@
+<?php
+declare(strict_types=1);
+require dirname(__DIR__).'/bootstrap.php';
+$checks=['app_env_production'=>Env::get('APP_ENV')==='production','debug_disabled'=>!Env::bool('APP_DEBUG',false),'https_url'=>str_starts_with((string)Env::get('APP_URL',''),'https://'),'admin_hash'=>password_get_info((string)Env::get('ADMIN_PASSWORD_HASH',''))['algo']!==0,'pepper'=>strlen((string)Env::get('SECURITY_PEPPER',''))>=32,'indexing_safe'=>Env::get('APP_ENV')==='production' ? Env::bool('SEARCH_ENGINE_INDEXING',false) : !Env::bool('SEARCH_ENGINE_INDEXING',true),'storage_private'=>is_writable(AppConfig::$data['storage']),'no_users_table'=>true];
+try { $db=Database::connection();$tables=$db->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);$checks['no_users_table']=!in_array('users',$tables,true); } catch(Throwable $e) {$checks['database']=false;}
+$report=['timestamp'=>gmdate('c'),'status'=>in_array(false,$checks,true)?'blocked':'ready','checks'=>$checks];$path=AppConfig::$data['storage'].'/reports/qa';if(!is_dir($path))mkdir($path,0750,true);file_put_contents($path.'/production-check.json',json_encode($report,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));echo json_encode($report,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE).PHP_EOL;exit($report['status']==='ready'?0:1);

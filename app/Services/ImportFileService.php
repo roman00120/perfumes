@@ -1,0 +1,5 @@
+<?php
+declare(strict_types=1);
+final class ImportFileService{
+ public function store(array$file):array{$max=max(1,Env::int('IMPORT_MAX_FILE_MB',15))*1024*1024;if(($file['error']??1)!==UPLOAD_ERR_OK||($file['size']??0)>$max)throw new InvalidArgumentException('El archivo excede el límite o no es válido.');$ext=strtolower(pathinfo((string)$file['name'],PATHINFO_EXTENSION));if(!in_array($ext,['csv','tsv'],true))throw new InvalidArgumentException('Solo se permite CSV UTF-8 o TSV.');$mime=(new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);if(!in_array($mime,['text/plain','text/csv','text/tab-separated-values','application/vnd.ms-excel'],true))throw new InvalidArgumentException('El MIME del archivo no es válido.');$dir=dirname(__DIR__,2).'/storage/imports';if(!is_dir($dir))mkdir($dir,0750,true);$name='import_'.bin2hex(random_bytes(12)).'.'.$ext;$path=$dir.'/'.$name;if(!move_uploaded_file($file['tmp_name'],$path))throw new RuntimeException('No fue posible guardar el archivo.');return['path'=>$path,'name'=>basename((string)$file['name']), 'stored'=>$name,'mime'=>$mime,'size'=>(int)$file['size'],'hash'=>hash_file('sha256',$path)];}
+}

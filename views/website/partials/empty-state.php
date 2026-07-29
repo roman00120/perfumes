@@ -1,0 +1,1 @@
+<div class="empty-public"><span class="empty-mark" aria-hidden="true">✦</span><h3><?= e($emptyTitle??'Estamos preparando algo especial') ?></h3><p><?= e($emptyText??'Escríbenos y te ayudaremos a encontrar una opción para ti.') ?></p><a class="button button-dark" href="<?= whatsapp_href() ?>" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp</a></div>

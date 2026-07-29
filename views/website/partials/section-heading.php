@@ -1,0 +1,1 @@
+<div class="section-heading <?= e($align??'') ?>"><p class="eyebrow"><?= e($eyebrow??'LES SENS PERFUMERÍA') ?></p><h2><?= e($heading??'') ?></h2><?php if(!empty($description)): ?><p><?= e($description) ?></p><?php endif; ?></div>

@@ -1,0 +1,3 @@
+<?php
+declare(strict_types=1);
+$file=$argv[1]??'';if($file===''||!is_file($file)){fwrite(STDERR,"Uso: php tools/verify_release.php archivo.zip\n");exit(1);}if(!class_exists('ZipArchive'))exit(1);$z=new ZipArchive();$z->open($file);$raw=$z->getFromName('RELEASE_MANIFEST.json');$manifest=json_decode((string)$raw,true);$errors=[];foreach($manifest as $path=>$hash){if($path==='_release')continue;$data=$z->getFromName($path);if($data===false||hash('sha256',$data)!==$hash)$errors[]=$path;}$z->close();echo json_encode(['package'=>$file,'status'=>$errors?'failed':'verified','errors'=>$errors],JSON_PRETTY_PRINT).PHP_EOL;exit($errors?1:0);

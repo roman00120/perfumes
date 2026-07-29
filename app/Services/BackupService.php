@@ -1,0 +1,3 @@
+<?php
+declare(strict_types=1);
+final class BackupService{public function create():string{$dump=(string)Env::get('MYSQLDUMP_PATH','');if($dump===''||!is_file($dump))throw new RuntimeException('mysqldump no está configurado.');$dir=dirname(__DIR__,2).'/storage/backups';if(!is_dir($dir))mkdir($dir,0750,true);$file=$dir.'/backup_'.date('Ymd_His').'.sql';$cfg=require dirname(__DIR__,2).'/config/database.php';$cmd=escapeshellarg($dump).' --host='.escapeshellarg($cfg['host']).' --port='.escapeshellarg((string)$cfg['port']).' --user='.escapeshellarg($cfg['user']).' --result-file='.escapeshellarg($file).' '.escapeshellarg($cfg['name']);exec($cmd,$out,$code);if($code!==0||!is_file($file))throw new RuntimeException('No fue posible crear el respaldo.');return$file;}}

@@ -1,0 +1,6 @@
+<?php
+declare(strict_types=1);
+final class PerfumeController {
+    public function __construct(private PDO $db) {}
+    public function show(string $slug): string { if(!preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/',strtolower($slug))){http_response_code(404);return view('errors/404');}$repo=new PerfumeRepository($this->db);$perfume=$repo->findPublicBySlug(strtolower($slug));if(!$perfume){$alias=$repo->findByAlias(SlugService::normalized($slug));if($alias){redirect('perfume/'.$alias['slug']);}http_response_code(404);return view('errors/404');}$images=$repo->images((int)$perfume['id']);$presentations=$repo->presentations((int)$perfume['id']);$notes=$repo->notes((int)$perfume['id']);$tags=$repo->tags((int)$perfume['id']);$categories=$repo->categories((int)$perfume['id']);$related=$repo->related($perfume);$repo->incrementViews((int)$perfume['id']);$canonical=url('perfume/'.$perfume['slug']);$json=['@context'=>'https://schema.org','@type'=>'Product','name'=>$perfume['name'],'brand'=>['@type'=>'Brand','name'=>$perfume['brand_name']??'Les Sens'],'description'=>$perfume['short_description']??'','image'=>array_values(array_filter(array_map(fn($i)=>media_url($i['image_path']??null),$images))), 'url'=>$canonical];return view('website/perfumes/show',compact('perfume','images','presentations','notes','tags','categories','related','canonical','json')); }
+}

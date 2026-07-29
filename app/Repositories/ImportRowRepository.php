@@ -1,0 +1,1 @@
+<?php declare(strict_types=1); final class ImportRowRepository{public function __construct(private PDO$db){}public function rows(int$id):array{$s=$this->db->prepare('SELECT * FROM import_rows WHERE import_id=? ORDER BY row_number LIMIT 200');$s->execute([$id]);return$s->fetchAll();}}
