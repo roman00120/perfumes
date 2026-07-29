@@ -12,5 +12,9 @@
 !/storage/releases/.gitkeep
 /public/uploads/*
 !/public/uploads/*/.gitkeep
+!/public/uploads/perfumes/
+/public/uploads/perfumes/*
+!/public/uploads/perfumes/.gitkeep
+!/public/uploads/perfumes/reference-*.png
 *.zip
 *.sha256
